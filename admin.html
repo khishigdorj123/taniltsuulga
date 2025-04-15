@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ Самбар</title>
+    <style>
+        body { font-family: sans-serif; padding: 40px; background: #f0f0f0; }
+        label, textarea, input { display: block; margin-bottom: 15px; width: 100%; max-width: 600px; }
+        button { padding: 10px 20px; background: #2575fc; color: white; border: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<h2>Миний мэдээлэл засах</h2>
+
+<label>Танилцуулга</label>
+<textarea id="about" rows="5"></textarea>
+
+<label>Имэйл</label>
+<input type="text" id="email">
+
+<label>Утас</label>
+<input type="text" id="phone">
+
+<button onclick="save()">Хадгалах</button>
+
+<script>
+    // Админ шалгах
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.href = "login.html";
+    }
+
+    // Өмнөх өгөгдлийг унших
+    document.getElementById("about").value = localStorage.getItem("about") || "";
+    document.getElementById("email").value = localStorage.getItem("email") || "";
+    document.getElementById("phone").value = localStorage.getItem("phone") || "";
+
+    function save() {
+        localStorage.setItem("about", document.getElementById("about").value);
+        localStorage.setItem("email", document.getElementById("email").value);
+        localStorage.setItem("phone", document.getElementById("phone").value);
+        alert("Амжилттай хадгалагдлаа!");
+    }
+</script>
+
+</body>
+</html>
