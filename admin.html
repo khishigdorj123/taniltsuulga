@@ -16,6 +16,7 @@
             background: #3f51b5;
             color: white;
             padding: 20px;
+            box-sizing: border-box;
         }
         .sidebar h2 {
             margin-top: 0;
@@ -57,6 +58,7 @@
 <div class="sidebar">
     <h2>Админ цэс</h2>
     <ul>
+        <li onclick="showContent('home')">Нүүр хуудас</li>
         <li onclick="showContent('about')">Танилцуулга</li>
         <li onclick="showContent('skills')">Ур чадвар</li>
         <li onclick="showContent('contact')">Холбоо барих</li>
@@ -64,38 +66,52 @@
     <button class="logout-btn" onclick="logout()">🚪 Гарах</button>
 </div>
 
-<div class="content" id="mainContent">
-    <h2>Тавтай морилно уу!</h2>
-    <p>Зүүн цэснээс хэсэг сонгоно уу.</p>
-</div>
+<div class="content" id="mainContent"></div>
 
 <script>
     // Нэвтэрсэн эсэхийг шалгах
     if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.href = "login.html";  // Хэрэв нэвтрээгүй бол login page руу шилжүүлэх
+        window.location.href = "login.html";
     }
+
+    // Анхны ачаалал дээр Нүүр хуудас-аа автоматаар харуулах
+    window.onload = function() {
+        showContent('home');
+    };
 
     // Контентын хэсгийг үзүүлэх
     function showContent(section) {
         const content = document.getElementById("mainContent");
+        let stored;
 
-        if (section === "about") {
+        if (section === "home") {
+            // Нүүр хуудас = Танилцуулга контентийг харуулах
+            stored = localStorage.getItem("about") || "Танилцуулгын агуулга хоосон байна.";
             content.innerHTML = `
-                <h2>Танилцуулга</h2>
-                <textarea id="aboutText" rows="5" style="width:100%;">${localStorage.getItem("about") || ""}</textarea>
+                <h2>Нүүр хуудас</h2>
+                <p>${stored}</p>
+            `;
+        } else if (section === "about") {
+            stored = localStorage.getItem("about") || "";
+            content.innerHTML = `
+                <h2>Танилцуулга засах</h2>
+                <textarea id="aboutText" rows="5" style="width:100%;">${stored}</textarea>
                 <br><button onclick="saveText('about')">Хадгалах</button>
             `;
         } else if (section === "skills") {
+            stored = localStorage.getItem("skills") || "";
             content.innerHTML = `
-                <h2>Ур чадвар</h2>
-                <textarea id="skillsText" rows="5" style="width:100%;">${localStorage.getItem("skills") || ""}</textarea>
+                <h2>Ур чадвар засах</h2>
+                <textarea id="skillsText" rows="5" style="width:100%;">${stored}</textarea>
                 <br><button onclick="saveText('skills')">Хадгалах</button>
             `;
         } else if (section === "contact") {
+            const email = localStorage.getItem("email") || "";
+            const phone = localStorage.getItem("phone") || "";
             content.innerHTML = `
-                <h2>Холбоо барих</h2>
-                <input type="text" id="email" placeholder="Имэйл" value="${localStorage.getItem("email") || ''}"><br>
-                <input type="text" id="phone" placeholder="Утас" value="${localStorage.getItem("phone") || ''}"><br>
+                <h2>Холбоо барих мэдээлэл засах</h2>
+                <input type="text" id="email" placeholder="Имэйл" style="width:100%;margin-bottom:10px;" value="${email}"><br>
+                <input type="text" id="phone" placeholder="Утас" style="width:100%;" value="${phone}"><br>
                 <button onclick="saveContact()">Хадгалах</button>
             `;
         }
@@ -103,9 +119,12 @@
 
     // Текст хадгалах
     function saveText(key) {
-        const textArea = document.getElementById(key + "Text");
-        localStorage.setItem(key, textArea.value);
-        alert("Хадгалагдлаа!");
+        const ta = document.getElementById(key + "Text");
+        if (ta) {
+            localStorage.setItem(key, ta.value);
+            alert("Хадгалагдлаа!");
+            showContent('home'); // Нүүр хуудас руу шилжиж шинэчилсэн агуулгыг харуулах
+        }
     }
 
     // Холбоо барих мэдээлэл хадгалах
@@ -113,6 +132,7 @@
         localStorage.setItem("email", document.getElementById("email").value);
         localStorage.setItem("phone", document.getElementById("phone").value);
         alert("Холбоо барих мэдээлэл хадгалагдлаа!");
+        showContent('home');
     }
 
     // Гарах
