@@ -4,72 +4,190 @@
     <meta charset="UTF-8">
     <title>Миний Танилцуулга</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Энгийн нэмэлт CSS */
+        .admin-menu { margin-top: 20px; }
+        .admin-menu button {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 10px;
+            background: #2575fc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .admin-menu button:hover { background: #6a11cb; }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">Баттулга Хишигдорж</div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="nav-link" data-target="home">Нүүр</a></li>
-                    <li><a href="#" class="nav-link" data-target="about">Танилцуулга</a></li>
-                    <li><a href="#" class="nav-link" data-target="skills">Ур чадвар</a></li>
-                    <li><a href="#" class="nav-link" data-target="contact">Холбоо барих</a></li>
-                    <li><a href="#" id="adminBtn">Админ</a></li>
-                </ul>
-            </nav>
+<header>
+    <div class="container">
+        <div class="logo">Баттулга Хишигдорж</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link" data-target="home">Нүүр</a></li>
+                <li><a href="#" class="nav-link" data-target="about">Танилцуулга</a></li>
+                <li><a href="#" class="nav-link" data-target="skills">Ур чадвар</a></li>
+                <li><a href="#" class="nav-link" data-target="contact">Холбоо барих</a></li>
+                <li><a href="#" id="adminBtn">Админ</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section id="home" class="section active">
+    <div class="hero-content">
+        <h1>Сайн байна уу?</h1>
+        <p id="introText">Намайг Хишигдорж гэдэг. Би вэб хөгжүүлэлт, программ хангамж сонирхдог оюутан.</p>
+    </div>
+</section>
+
+<section id="about" class="section">
+    <h2>Танилцуулга</h2>
+    <p id="aboutText">Би программ хангамжийн чиглэлээр суралцдаг бөгөөд веб хөгжүүлэлт, UI/UX дизайн, мэдээллийн системд сонирхолтой.</p>
+</section>
+
+<section id="skills" class="section">
+    <h2>Ур чадвар</h2>
+    <ul id="skillsList">
+        <li>HTML, CSS, JavaScript</li>
+        <li>PHP & MySQL</li>
+        <li>Laravel, WordPress</li>
+        <li>Bootstrap, UI/UX дизайн</li>
+    </ul>
+</section>
+
+<section id="contact" class="section">
+    <h2>Холбоо барих</h2>
+    <p id="emailText">battulga@example.com</p>
+    <p id="phoneText">88888888</p>
+</section>
+
+<!-- Админ хэсэг -->
+<section id="admin" class="section">
+    <h2>Админ хэсэг</h2>
+    <div id="loginSection">
+        <input type="password" id="adminPassword" placeholder="Нууц үг..." />
+        <button onclick="checkPassword()">Нэвтрэх</button>
+    </div>
+
+    <div id="editSection" style="display:none;">
+        <div class="admin-menu">
+            <button onclick="editContent('intro')">Танилцуулга засах</button>
+            <button onclick="editContent('skills')">Ур чадвар засах</button>
+            <button onclick="editContent('contact')">Холбоо барих засах</button>
+            <button onclick="exitAdmin()">Гарах</button>
         </div>
-    </header>
 
-    <section id="home" class="section active">
-        <div class="hero-content">
-            <h1>Сайн байна уу?</h1>
-            <p id="introText">Намайг Хишигдорж гэдэг. Би вэб хөгжүүлэлт, программ хангамж сонирхдог оюутан.</p>
+        <div id="editorArea" style="margin-top: 20px;">
+            <!-- Энд өөрчлөх форм гарна -->
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="about" class="section">
-        <h2>Танилцуулга</h2>
-        <p id="aboutText">Би программ хангамжийн чиглэлээр суралцдаг бөгөөд веб хөгжүүлэлт, UI/UX дизайн, мэдээллийн системд сонирхолтой.</p>
-    </section>
+<footer>
+    <div class="container">
+        <p>© 2025 Баттулга Хишигдорж. Бүх эрх хуулиар хамгаалагдсан.</p>
+    </div>
+</footer>
 
-    <section id="skills" class="section">
-        <h2>Ур чадвар</h2>
-        <ul>
-            <li>HTML, CSS, JavaScript</li>
-            <li>PHP & MySQL</li>
-            <li>Laravel, WordPress</li>
-            <li>Bootstrap, UI/UX дизайн</li>
-        </ul>
-    </section>
+<script>
+    // Хэсэг солих
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(this.getAttribute('data-target')).classList.add('active');
+        });
+    });
 
-    <section id="contact" class="section">
-        <h2>Холбоо барих</h2>
-        <p id="emailText">battulga@example.com</p>
-        <p id="phoneText">88888888</p>
-    </section>
+    // Админ товч
+    document.getElementById('adminBtn').addEventListener('click', function() {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById('admin').classList.add('active');
+    });
 
-    <!-- Админ хэсэг -->
-    <section id="admin" class="section">
-        <h2>Админ хэсэг</h2>
-        <div id="loginSection">
-            <input type="password" id="adminPassword" placeholder="Нууц үг..." />
-            <button onclick="checkPassword()">Нэвтрэх</button>
-        </div>
-        <div id="editSection" style="display:none;">
-            <textarea id="introInput" placeholder="Танилцуулга..."></textarea>
-            <input type="text" id="emailInput" placeholder="Имэйл хаяг..." />
-            <input type="text" id="phoneInput" placeholder="Утасны дугаар..." />
-            <button onclick="saveInfo()">Хадгалах</button>
-        </div>
-    </section>
+    function checkPassword() {
+        const pw = document.getElementById('adminPassword').value;
+        if (pw === 'admin123') {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('editSection').style.display = 'block';
+        } else {
+            alert('Нууц үг буруу байна!');
+        }
+    }
 
-    <footer>
-        <div class="container">
-            <p>© 2025 Баттулга Хишигдорж. Бүх эрх хуулиар хамгаалагдсан.</p>
-        </div>
-    </footer>
+    function editContent(type) {
+        const editor = document.getElementById('editorArea');
+        if (type === 'intro') {
+            editor.innerHTML = `
+                <h3>Танилцуулга засах</h3>
+                <textarea id="introInput" rows="6">${localStorage.getItem('intro') || ''}</textarea>
+                <button onclick="saveIntro()">Хадгалах</button>
+            `;
+        } else if (type === 'skills') {
+            editor.innerHTML = `
+                <h3>Ур чадварууд засах</h3>
+                <textarea id="skillsInput" rows="6">${localStorage.getItem('skills') || ''}</textarea>
+                <button onclick="saveSkills()">Хадгалах</button>
+            `;
+        } else if (type === 'contact') {
+            editor.innerHTML = `
+                <h3>Холбоо барих мэдээлэл засах</h3>
+                <input type="text" id="emailInput" placeholder="Имэйл" value="${localStorage.getItem('email') || ''}">
+                <input type="text" id="phoneInput" placeholder="Утас" value="${localStorage.getItem('phone') || ''}">
+                <button onclick="saveContact()">Хадгалах</button>
+            `;
+        }
+    }
 
-    <script src="script.js"></script>
+    function saveIntro() {
+        const intro = document.getElementById('introInput').value;
+        localStorage.setItem('intro', intro);
+        document.getElementById('introText').innerText = intro;
+        alert('Танилцуулга хадгалагдлаа!');
+    }
+
+    function saveSkills() {
+        const skills = document.getElementById('skillsInput').value;
+        localStorage.setItem('skills', skills);
+
+        const skillsArray = skills.split('\n').filter(s => s.trim() !== '');
+        const skillsList = document.getElementById('skillsList');
+        skillsList.innerHTML = skillsArray.map(skill => `<li>${skill}</li>`).join('');
+        alert('Ур чадвар хадгалагдлаа!');
+    }
+
+    function saveContact() {
+        const email = document.getElementById('emailInput').value;
+        const phone = document.getElementById('phoneInput').value;
+        localStorage.setItem('email', email);
+        localStorage.setItem('phone', phone);
+
+        document.getElementById('emailText').innerText = email;
+        document.getElementById('phoneText').innerText = phone;
+        alert('Холбоо барих мэдээлэл хадгалагдлаа!');
+    }
+
+    // Хадгалсан мэдээллийг эхлэн ачааллах
+    window.onload = function() {
+        if (localStorage.getItem('intro')) {
+            document.getElementById('introText').innerText = localStorage.getItem('intro');
+        }
+        if (localStorage.getItem('skills')) {
+            const skillsArray = localStorage.getItem('skills').split('\n');
+            const skillsList = document.getElementById('skillsList');
+            skillsList.innerHTML = skillsArray.map(skill => `<li>${skill}</li>`).join('');
+        }
+        if (localStorage.getItem('email')) {
+            document.getElementById('emailText').innerText = localStorage.getItem('email');
+        }
+        if (localStorage.getItem('phone')) {
+            document.getElementById('phoneText').innerText = localStorage.getItem('phone');
+        }
+    }
+</script>
 </body>
-</html>
+</html>   

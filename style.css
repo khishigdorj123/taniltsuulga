@@ -75,13 +75,13 @@ nav ul li a:hover {
 }
 
 footer {
-    background-color: #544024;
+    background-color: #684009;
     color: white;
     text-align: center;
     padding: 20px;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 50%;
 }
 
 /* Админ хэсэг */
@@ -104,7 +104,27 @@ footer {
     cursor: pointer;
     transition: background 0.3s ease;
 }
+.admin-nav {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .admin-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    border-radius: 8px;
+    transition: background 0.3s ease;
+  }
+  
+  .admin-nav a:hover {
+    background: linear-gradient(to right, #2575fc, #6a11cb);
+  }
+  
 
-#admin button:hover {
-    background-color: #e65c00;
-}
+

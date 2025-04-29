@@ -2,44 +2,123 @@
 <html lang="mn">
 <head>
     <meta charset="UTF-8">
-    <title>Админ Самбар</title>
+    <title>Админ Хуудас</title>
     <style>
-        body { font-family: sans-serif; padding: 40px; background: #f0f0f0; }
-        label, textarea, input { display: block; margin-bottom: 15px; width: 100%; max-width: 600px; }
-        button { padding: 10px 20px; background: #2575fc; color: white; border: none; border-radius: 5px; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background: #3f51b5;
+            color: white;
+            padding: 20px;
+        }
+        .sidebar h2 {
+            margin-top: 0;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 15px 0;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover {
+            text-decoration: underline;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 40px;
+            background: white;
+            overflow-y: auto;
+        }
+        .logout-btn {
+            margin-top: 30px;
+            padding: 10px;
+            background: #f44336;
+            color: white;
+            border: none;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background: #d32f2f;
+        }
     </style>
 </head>
 <body>
 
-<h2>Миний мэдээлэл засах</h2>
+<div class="sidebar">
+    <h2>Админ цэс</h2>
+    <ul>
+        <li onclick="showContent('about')">Танилцуулга</li>
+        <li onclick="showContent('skills')">Ур чадвар</li>
+        <li onclick="showContent('contact')">Холбоо барих</li>
+    </ul>
+    <button class="logout-btn" onclick="logout()">🚪 Гарах</button>
+</div>
 
-<label>Танилцуулга</label>
-<textarea id="about" rows="5"></textarea>
-
-<label>Имэйл</label>
-<input type="text" id="email">
-
-<label>Утас</label>
-<input type="text" id="phone">
-
-<button onclick="save()">Хадгалах</button>
+<div class="content" id="mainContent">
+    <h2>Тавтай морилно уу!</h2>
+    <p>Зүүн цэснээс хэсэг сонгоно уу.</p>
+</div>
 
 <script>
-    // Админ шалгах
+    // Нэвтэрсэн эсэхийг шалгах
     if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.href = "login.html";
+        window.location.href = "login.html";  // Хэрэв нэвтрээгүй бол login page руу шилжүүлэх
     }
 
-    // Өмнөх өгөгдлийг унших
-    document.getElementById("about").value = localStorage.getItem("about") || "";
-    document.getElementById("email").value = localStorage.getItem("email") || "";
-    document.getElementById("phone").value = localStorage.getItem("phone") || "";
+    // Контентын хэсгийг үзүүлэх
+    function showContent(section) {
+        const content = document.getElementById("mainContent");
 
-    function save() {
-        localStorage.setItem("about", document.getElementById("about").value);
+        if (section === "about") {
+            content.innerHTML = `
+                <h2>Танилцуулга</h2>
+                <textarea id="aboutText" rows="5" style="width:100%;">${localStorage.getItem("about") || ""}</textarea>
+                <br><button onclick="saveText('about')">Хадгалах</button>
+            `;
+        } else if (section === "skills") {
+            content.innerHTML = `
+                <h2>Ур чадвар</h2>
+                <textarea id="skillsText" rows="5" style="width:100%;">${localStorage.getItem("skills") || ""}</textarea>
+                <br><button onclick="saveText('skills')">Хадгалах</button>
+            `;
+        } else if (section === "contact") {
+            content.innerHTML = `
+                <h2>Холбоо барих</h2>
+                <input type="text" id="email" placeholder="Имэйл" value="${localStorage.getItem("email") || ''}"><br>
+                <input type="text" id="phone" placeholder="Утас" value="${localStorage.getItem("phone") || ''}"><br>
+                <button onclick="saveContact()">Хадгалах</button>
+            `;
+        }
+    }
+
+    // Текст хадгалах
+    function saveText(key) {
+        const textArea = document.getElementById(key + "Text");
+        localStorage.setItem(key, textArea.value);
+        alert("Хадгалагдлаа!");
+    }
+
+    // Холбоо барих мэдээлэл хадгалах
+    function saveContact() {
         localStorage.setItem("email", document.getElementById("email").value);
         localStorage.setItem("phone", document.getElementById("phone").value);
-        alert("Амжилттай хадгалагдлаа!");
+        alert("Холбоо барих мэдээлэл хадгалагдлаа!");
+    }
+
+    // Гарах
+    function logout() {
+        localStorage.removeItem("isLoggedIn");
+        window.location.href = "login.html";
     }
 </script>
 
